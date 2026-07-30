@@ -1,98 +1,52 @@
-# -----------------------------
-# Python
-# -----------------------------
-__pycache__/
-*.py[cod]
-*$py.class
-
-# -----------------------------
-# Virtual Environment
-# -----------------------------
+# Virtual environment
 .venv/
-venv/
-env/
 
-# -----------------------------
-# Environment Variables
-# -----------------------------
+# Environment
 .env
 .env.*
 !.env.example
 
-# -----------------------------
-# Django
-# -----------------------------
-db.sqlite3
+# Python
+__pycache__/
+*.py[cod]
 *.sqlite3
 
-media/
-staticfiles/
-
-# -----------------------------
-# Logs
-# -----------------------------
-*.log
-logs/
-
-# -----------------------------
-# Coverage
-# -----------------------------
-.coverage
-htmlcov/
-.coverage.*
-
-# -----------------------------
-# Pytest
-# -----------------------------
-.pytest_cache/
-
-# -----------------------------
-# Ruff
-# -----------------------------
-.ruff_cache/
-
-# -----------------------------
-# mypy
-# -----------------------------
-.mypy_cache/
-
-# -----------------------------
 # IDE
-# -----------------------------
 .vscode/
 .idea/
 
-# -----------------------------
-# OS
-# -----------------------------
-.DS_Store
-Thumbs.db
+# Logs
+*.log
 
-# -----------------------------
-# Build
-# -----------------------------
-build/
-dist/
-*.egg-info/
+# Media
+media/
 
-# -----------------------------
-# Jupyter
-# -----------------------------
-.ipynb_checkpoints/
+# Static
+staticfiles/
 
-# -----------------------------
-# Local PostgreSQL Dumps
-# -----------------------------
-*.sql
+# Coverage
+.coverage
+htmlcov/
+.pytest_cache/
 
-# -----------------------------
-# Docker
-# -----------------------------
-*.pid
-docker-compose.override.yml
+# Ruff
+.ruff_cache/
 
-# -----------------------------
-# Secrets
-# -----------------------------
-*.pem
-*.key
+# mypy
+.mypy_cache/
+
+# Python tooling
+.pytest_cache/
+.coverage
+htmlcov/
+.ruff_cache/
+.mypy_cache/
+
+# IDE
+.vscode/
+.idea/
+
+# Django
+db.sqlite3
+media/
+staticfiles/
