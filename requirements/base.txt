@@ -1,0 +1,13 @@
+Django~=5.2
+djangorestframework
+djangorestframework-simplejwt
+psycopg[binary]
+python-dotenv
+django-filter
+django-cors-headers
+cloudinary
+django-cloudinary-storage
+channels
+channels-redis
+drf-spectacular
+Pillow

@@ -1,0 +1,10 @@
+-r base.txt
+
+black
+isort
+ruff
+pre-commit
+pytest
+pytest-django
+factory-boy
+coverage
