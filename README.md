@@ -90,7 +90,7 @@ UniAGORA/
 ### Clone the repository
 
 ```bash
-git clone git@github.com:Abduls4u/uniagora-backend.git
+git clone git@github.com:Eddy-attendance/uniagoraBackend.git
 cd uniagora-backend
 ```
 
