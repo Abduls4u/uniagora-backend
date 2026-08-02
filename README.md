@@ -145,7 +145,7 @@ Development follows a structured engineering process:
 * [x] Modular settings
 * [x] Project structure established
 * [x] Development tooling configured
-* [ ] Shared infrastructure (`common`)
+* [x] Shared infrastructure (`common`)
 * [ ] Authentication
 * [ ] Universities
 * [ ] Vendors
