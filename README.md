@@ -91,7 +91,7 @@ UniAGORA/
 
 ```bash
 git clone git@github.com:Eddy-attendance/uniagoraBackend.git
-cd uniagora-backend
+cd uniagoraBackend
 ```
 
 ### Create a virtual environment
@@ -145,9 +145,9 @@ Development follows a structured engineering process:
 * [x] Modular settings
 * [x] Project structure established
 * [x] Development tooling configured
-* [x] Shared infrastructure (`common`)
+* [x] Shared infrastructure (`common & core`)
 * [ ] Authentication
-* [ ] Universities
+* [x] Universities
 * [ ] Vendors
 * [ ] Products
 * [ ] Chat
