@@ -64,6 +64,14 @@ INSTALLED_APPS = [
     "drf_spectacular",
 ]
 
+REST_FRAMEWORK = {
+    "EXCEPTION_HANDLER": "apps.common.exceptions.custom_exception_handler",
+    "DEFAULT_RENDERER_CLASSES": [
+        "apps.common.renderers.EnvelopeJSONRenderer",
+    ],
+    "DEFAULT_PAGINATION_CLASS": "apps.common.pagination.StandardResultsSetPagination",
+}
+
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
