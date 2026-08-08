@@ -1,18 +1,22 @@
-from django.contrib.auth.models import User
 from rest_framework import status
 from rest_framework.test import APITestCase
 
 from apps.universities.models import University
+from apps.users.models import User
 
 
-def make_user(*, is_staff=False, is_superuser=False):
+def make_user(is_staff=False, is_superuser=False, **kwargs):
     counter = getattr(make_user, "_counter", 0) + 1
     make_user._counter = counter
+
+    email = kwargs.pop("email", f"test-{counter}@example.com")
+
     return User.objects.create_user(
-        username=f"user{counter}",
-        password="pass1234",
+        email=email,
+        password="testpass123",
         is_staff=is_staff,
         is_superuser=is_superuser,
+        **kwargs,
     )
 
 
@@ -26,7 +30,7 @@ class UniversityListViewTests(APITestCase):
 
     def test_anonymous_user_is_denied(self):
         response = self.client.get(self.url)
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
         self.assertFalse(response.data["success"])
 
     def test_authenticated_customer_sees_only_active_universities(self):
@@ -93,8 +97,7 @@ class UniversityCreateViewTests(APITestCase):
 
     def test_anonymous_cannot_create(self):
         response = self.client.post(self.url, {"name": "New Uni", "short_name": "NEW"})
-        # See test_anonymous_user_is_denied above re: 403 vs 401.
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     def test_admin_can_create(self):
         self.client.force_authenticate(make_user(is_staff=True))

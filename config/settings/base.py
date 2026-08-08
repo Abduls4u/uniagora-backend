@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
+from datetime import timedelta
 from pathlib import Path
 
 from decouple import config
@@ -30,6 +31,8 @@ DEBUG = config("DEBUG", default=False, cast=bool)
 
 ALLOWED_HOSTS = []
 
+
+AUTH_USER_MODEL = "users.User"
 
 # Application definition
 
@@ -62,6 +65,7 @@ INSTALLED_APPS = [
     "cloudinary_storage",
     "channels",
     "drf_spectacular",
+    "rest_framework_simplejwt.token_blacklist",
 ]
 
 REST_FRAMEWORK = {
@@ -70,6 +74,9 @@ REST_FRAMEWORK = {
         "apps.common.renderers.EnvelopeJSONRenderer",
     ],
     "DEFAULT_PAGINATION_CLASS": "apps.common.pagination.StandardResultsSetPagination",
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ],
 }
 
 MIDDLEWARE = [
@@ -132,6 +139,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
     {
         "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
+        "OPTIONS": {"min_length": 8},
     },
     {
         "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
@@ -141,6 +149,15 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=30),
+    "ROTATE_REFRESH_TOKENS": True,
+    "BLACKLIST_AFTER_ROTATION": True,
+    "AUTH_HEADER_TYPES": ("Bearer",),
+    "USER_ID_FIELD": "id",
+    "USER_ID_CLAIM": "user_id",
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
@@ -163,3 +180,14 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+# Password-reset email delivery (EDD §10, assumption 3 — no provider is
+# named in the PRD; console backend is a reasonable dev default).
+EMAIL_BACKEND = (
+    "django.core.mail.backends.console.EmailBackend"  # swap for real backend in prod
+)
+DEFAULT_FROM_EMAIL = "no-reply@uniagora.app"
+FRONTEND_PASSWORD_RESET_URL = (
+    "https://uniagora.app/reset-password"  # adjust to real frontend route
+)
