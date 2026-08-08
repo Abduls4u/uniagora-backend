@@ -146,9 +146,11 @@ Development follows a structured engineering process:
 * [x] Project structure established
 * [x] Development tooling configured
 * [x] Shared infrastructure (`common & core`)
-* [ ] Authentication
+* [x] Users
+* [x] Authentication
 * [x] Universities
-* [ ] Vendors
+* [x] Vendors
+* [x] Stores
 * [ ] Products
 * [ ] Chat
 * [ ] Reviews
