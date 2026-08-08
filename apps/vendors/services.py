@@ -67,32 +67,56 @@ class VendorVerificationService:
 
 
 class VendorSuspensionService:
-    """Admin-triggered suspend/reinstate (DDS §9.2, §10).
-
-    DDS specifies these transitions cascade into Store.is_active and
-    Product.status (HIDDEN_BY_SUSPENSION). Neither `stores` nor `products`
-    exists yet in the build order (explicitly out of scope this session), so
-    only the VendorProfile.status transition is implemented. The cascade must
-    be added here once those apps exist — flagged in README for CTO review.
-    """
+    """Admin-triggered suspend/reinstate (DDS §9.2, §10)."""
 
     @staticmethod
+    @transaction.atomic
     def suspend(*, vendor_profile):
         if vendor_profile.status != VendorStatus.VERIFIED:
             raise ConflictError("Only a verified vendor can be suspended.")
+
         vendor_profile.status = VendorStatus.SUSPENDED
         vendor_profile.save(update_fields=["status", "updated_at"])
-        # TODO(stores/products): Store.is_active=False; Product -> HIDDEN_BY_SUSPENSION
+
+        from apps.stores.services import StoreService
+
+        try:
+            store = vendor_profile.store
+        except VendorProfile.store.RelatedObjectDoesNotExist:
+            store = None
+
+        if store is not None:
+            StoreService.set_active_state(
+                store=store,
+                is_active=False,
+            )
+
+        # Product suspension cascade will be added when products exists.
         return vendor_profile
 
     @staticmethod
+    @transaction.atomic
     def reinstate(*, vendor_profile):
         if vendor_profile.status != VendorStatus.SUSPENDED:
             raise ConflictError("Only a suspended vendor can be reinstated.")
+
         vendor_profile.status = VendorStatus.VERIFIED
         vendor_profile.save(update_fields=["status", "updated_at"])
-        # TODO(stores/products): Store.is_active=True; per-product reinstatement
-        # (expired-while-hidden products become EXPIRED rather than ACTIVE).
+
+        from apps.stores.services import StoreService
+
+        try:
+            store = vendor_profile.store
+        except VendorProfile.store.RelatedObjectDoesNotExist:
+            store = None
+
+        if store is not None:
+            StoreService.set_active_state(
+                store=store,
+                is_active=True,
+            )
+
+        # Product reinstatement cascade will be added when products exists.
         return vendor_profile
 
 
